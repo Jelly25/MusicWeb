@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线音乐</title>
+  <link rel="stylesheet" href="css/index.css">
+  <script src="http://apps.bdimg.com/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="js/index.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 顶部栏 -->
+    <div class="top">
+      <h2>听歌</h2>
+      <input type="text" class="search" placeholder="搜索想听的歌曲" v-model="inputValue" @keyup.enter='searchMusic'>
+    </div>
+    <div class="box">
+      <!-- 歌曲列表 -->
+      <div class="aside">
+        <ul>
+          <li v-for="(item, index) in songList">
+            <a href="javaScript:;" class="play" @click='clickMusic(item.id)'></a>
+            <a href="javaScript:;" class="video" v-on:click="clickmv(item.mvid)" v-if="item.mvid!==0"></a>
+            <span>{{item.name}}</span>
+          </li>
+        </ul>
+      </div>
+      <!-- 歌曲动画 -->
+      <div class="animation">
+        <div class="blackcircle" :class="{xuanzhuan:isplay}">
+          <img v-bind:src="imgurl" alt="" class="cover" v-show="flag">
+        </div>
+      </div>
+      <!-- 评论 -->
+      <div class="comments">
+        <h3>热门评论</h3>
+        <ol>
+          <li v-for="(item, index) in commentList" :key="index" class="clearfix">
+            <img v-bind:src="item.user.avatarUrl" alt="" class="usericon">
+            <div class="littlebox">
+              <div class="username">{{item.user.nickname}}</div>
+              <div class="usermessage">{{item.content}}</div>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </div>
+    <!-- 底部 -->
+    <footer>
+      <audio v-bind:src="songUrl" loop="false" controls class="audio" autoplay @play='play' v-on:pause="pause">
+      </audio>
+      <!-- <a href="javaScript:;" class="pauseplay"></a>
+            <span class="time">0:15/4-29</span>
+            <div class="line"></div>
+            <a href="javaScript:;" class="volume"></a>
+            <a href="javaScript:;" class="more"></a> -->
+    </footer>
+    <!-- 视频遮罩层 -->
+    <div class="mask" v-show="maskflag" @click='clickmask'>
+      <video ref="vedio" class="musicvideo" v-bind:src="mvUrl" controls></video>
+    </div>
+  </div>
+
+</body>
+
+</html>
